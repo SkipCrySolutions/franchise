@@ -1,0 +1,27 @@
+<!--Menu displayed at bottom-->
+<nav
+  class="bg-gray-300 fixed bottom-0 w-full flex justify-around items-center p-2 md:hidden"
+>
+  <a
+    [routerLink]="['/']"
+    class="flex flex-col items-center text-gray-800 hover:text-black"
+  >
+    <i class="fa-solid fa-house"></i>
+    <span class="text-xs">Home</span>
+  </a>
+  <a
+    (click)="openOrders()"
+    class="flex flex-col items-center text-gray-800 hover:text-black cursor-pointer"
+  >
+    <i class="fa-solid fa-receipt"></i>
+    <span class="text-xs">Orders</span>
+  </a>
+  <a
+    (click)="openProducts()"
+    class="flex flex-col items-center text-gray-800 hover:text-black cursor-pointer"
+  >
+    <i class="fa-solid fa-shop"></i>
+    <span class="text-xs">Products</span>
+  </a>
+</nav>
+

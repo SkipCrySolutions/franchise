@@ -1,4 +1,4 @@
-<div class="p-4">
+<div class="px-2 py-10">
   <div>
     <input
       pInputText
@@ -7,10 +7,10 @@
       placeholder="Search..."
       (input)="performSearch()"
     />
-    <p-button (onClick)="clearSearch()">Clear</p-button>
+    <button (click)="clearSearch()">Clear</button>
   </div>
-  <div>
-    <p-button (onClick)="addProduct()">Add Product</p-button>
+  <div class="flex justify-center p-2">
+    <button (click)="addProduct()">Add Product</button>
   </div>
 </div>
 <div class="flex border-b mb-4">
@@ -22,23 +22,20 @@
     }"
     (click)="selectTab('all')"
   >
-    All Products
-  </button>
-  <button
-    class="px-4 py-2 -mb-px font-semibold text-gray-800 border-b-2"
-    [ngClass]="{
-      'border-blue-500': selectedTab === 'franchise',
-      'border-transparent': selectedTab !== 'franchise'
-    }"
-    (click)="selectTab('franchise')"
-  >
-    Franchise
+    My Products
   </button>
 </div>
-@if (products.length) {
+<div>
+  <app-switch (isOnChange)="onChange($event)"></app-switch>
+</div>
+@if (loading) {
+<app-loader></app-loader>
+} @else { @if (products.length) {
 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
   <div *ngFor="let product of products">
     <app-product [product]="product"></app-product>
   </div>
 </div>
-}
+} @else {
+<p>No products found</p>
+} }

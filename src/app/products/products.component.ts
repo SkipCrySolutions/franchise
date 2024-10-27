@@ -1,17 +1,27 @@
-import { CommonModule } from "@angular/common";
-import { Component, Input } from "@angular/core";
-import { ButtonModule } from "primeng/button";
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
-import { ProductComponent } from "./product/product.component";
-import { ProductService } from "./product.service";
-import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ProductComponent } from './product/product.component';
+import { ProductService } from './product.service';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppLoaderComponent } from '../loader/loader.component';
+import { SwitchComponent } from '../components/switch/switch.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
   templateUrl: 'products.component.html',
-  imports: [CommonModule, ButtonModule, DataViewModule, ProductComponent, FormsModule]
+  imports: [
+    CommonModule,
+    ButtonModule,
+    DataViewModule,
+    ProductComponent,
+    FormsModule,
+    AppLoaderComponent,
+    SwitchComponent
+  ],
 })
 export class ProductsComponent {
   @Input()
@@ -25,9 +35,10 @@ export class ProductsComponent {
 
   public selectedTab = 'all';
 
+  public loading = true;
+
   constructor(private productService: ProductService, private router: Router) {
     this.getProducts();
-    // this.selectTab('franchise');
   }
 
   public performSearch(): void {
@@ -36,11 +47,11 @@ export class ProductsComponent {
       // Perform search logic here, e.g., filtering products based on searchQuery
       this.products = this.products.filter((product: any) => {
         console.log('product => ', product);
-        const searchIncluded = product.Name.toLowerCase().includes(this.searchQuery);
-        if (searchIncluded)
-          return product;
-      }
-      );
+        const searchIncluded = product.Name.toLowerCase().includes(
+          this.searchQuery
+        );
+        if (searchIncluded) return product;
+      });
       console.log('products +> ', this.products);
     }
   }
@@ -59,19 +70,31 @@ export class ProductsComponent {
   public selectTab(tab: string) {
     this.selectedTab = tab;
     if (tab === 'franchise') {
-      this.products = this.copyProducts.filter((product: any) => product.Franchise);
+      this.products = this.copyProducts.filter(
+        (product: any) => product.Franchise
+      );
       console.log('franchise products => ', this.products);
     } else {
       this.products = this.copyProducts;
     }
   }
 
-  private getProducts(): void {
-    this.productService.getAllProducts().subscribe((resp: any) => {
-      this.products = resp;
-      this.copyProducts = this.products;
-      console.log('products => ', this.products);
-    });
+  private getProducts(value?: boolean): void {
+    this.productService.getProducts(value).subscribe(
+      (resp: any) => {
+        this.products = resp;
+        this.copyProducts = this.products;
+        this.loading = false;
+        console.log('products => ', this.products);
+      },
+      () => {
+        this.loading = true;
+      }
+    );
+  }
+
+  public onChange(value: boolean) {
+    console.log('value => ', value);
+    this.getProducts(value);
   }
 }
-

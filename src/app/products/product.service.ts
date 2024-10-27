@@ -1,19 +1,21 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { Product } from "./product.model";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Product } from './product.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
   constructor(private http: HttpClient) {
     this.http.get(`/api/productQty`).subscribe();
   }
 
-  public getAllProducts(): Observable<any> {
-    const url = `/api/products`;
+  public getProducts(value?: boolean): Observable<any> {
+    const storeId = 'CHNPER1';
+    const parentStoreId = 'CHNPER1';
+    const isAvailable = !!value;
+    const url = `/api/products?store=${storeId}&parentStore=${parentStoreId}&isAvailable=${isAvailable}`;
     return this.http.get(url);
   }
 
@@ -22,7 +24,11 @@ export class ProductService {
     return this.http.get(url);
   }
 
-  public getProductByCode(productId: string, storeId: string, productCode: string): Observable<any> {
+  public getProductByCode(
+    productId: string,
+    storeId: string,
+    productCode: string
+  ): Observable<any> {
     console.log('product => ', productId);
     const url = `/api/products/get/store/${storeId}/${productId}/${productCode}`;
     return this.http.get(url);
