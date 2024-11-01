@@ -7,7 +7,7 @@
       </ng-template>
     </p-timeline> -->
   </div>
-  <div class="flex border-b mb-4">
+  <div class="flex border-b mb-4 overflow-x-auto whitespace-nowrap">
     <button
       class="px-4 py-2 -mb-px font-semibold text-gray-800 border-b-2"
       [ngClass]="{
@@ -69,15 +69,15 @@
       Ready for return
     </button>
     <button
-    class="px-4 py-2 -mb-px font-semibold text-gray-800 border-b-2"
-    [ngClass]="{
-      'border-blue-500': orderService.selectedTab === 'returned',
-      'border-transparent': orderService.selectedTab !== 'returned'
-    }"
-    (click)="selectTab('returned')"
-  >
-    Returned
-  </button>
+      class="px-4 py-2 -mb-px font-semibold text-gray-800 border-b-2"
+      [ngClass]="{
+        'border-blue-500': orderService.selectedTab === 'returned',
+        'border-transparent': orderService.selectedTab !== 'returned'
+      }"
+      (click)="selectTab('returned')"
+    >
+      Returned
+    </button>
     <button
       class="px-4 py-2 -mb-px font-semibold text-gray-800 border-b-2"
       [ngClass]="{
@@ -115,92 +115,139 @@
     <div class="bg-white shadow-md p-4 rounded-lg my-2">
       <div>
         <div class="flex">
-          <div class="px-2 font-semibold border rounded">
+          <div class="px-1 font-semibold border rounded">
             <span class="text-red-500">{{ order.customerId }}</span>
           </div>
-          <div class="px-2 font-semibold border rounded">
+          <div class="px-1 font-semibold border rounded">
             <span class="text-yellow-500">{{ order.storeId }}</span>
           </div>
-          <div class="text-md font-bold mb-2 px-2">Order #{{ order.orderId }}</div>
+        </div>
+        <div class="flex">
+          <div class="text-md font-bold mb-2 px-2">
+            Order #{{ order.orderId }}
+          </div>
           <div class="px-2">{{ order.Status }}</div>
+        </div>
+        <div class="flex">
           <div class="px-2">
             @if (order.Status !== 'Closed') {
-            <p-button class="border p-2" (onClick)="setStatus(order)">
-              @if (order.Status === 'Placed') { Accept } @if (order.Status ===
-              'Accepted') { Pack } @if (order.Status === 'Packed') { Ready for
-              delivery } @if (order.Status === 'OnTheWay') { Delivered } @if
-              (order.Status === 'Delivered') { Time for return } @if
-              (order.Status === 'ReturnTime') { Returned } @if (order.Status ===
-              'Returned') { Toy Check } @if (order.Status === 'ToyChecked') {
-              Close }
-            </p-button>
+            <button
+              class="border rounded-md p-2 px-4 font-semibold transition-colors duration-200"
+              [ngClass]="{
+                'bg-blue-500 text-white hover:bg-blue-600':
+                  order.Status === 'Placed',
+                'bg-green-500 text-white hover:bg-green-600':
+                  order.Status === 'Accepted',
+                'bg-yellow-500 text-white hover:bg-yellow-600':
+                  order.Status === 'Packed',
+                'bg-purple-500 text-white hover:bg-purple-600':
+                  order.Status === 'Ready for delivery',
+                'bg-indigo-500 text-white hover:bg-indigo-600':
+                  order.Status === 'OnTheWay',
+                'bg-pink-500 text-white hover:bg-pink-600':
+                  order.Status === 'Delivered',
+                'bg-red-500 text-white hover:bg-red-600':
+                  order.Status === 'ReturnTime',
+                'bg-gray-500 text-white hover:bg-gray-600':
+                  order.Status === 'Returned',
+                'bg-teal-500 text-white hover:bg-teal-600':
+                  order.Status === 'ToyChecked'
+              }"
+              (click)="setStatus(order)"
+            >
+              @if (order.Status === 'Placed') {
+              <span class="text-white">Accept</span>
+              } @if(order.Status === 'Accepted') {
+              <span class="text-white">Pack</span>
+              } @if(order.Status === 'Packed') {
+              <span class="text-white">Ready for delivery</span>
+              } @if(order.Status === 'OnTheWay'){
+              <span class="text-white">Delivered</span>
+              } @if(order.Status === 'Delivered'){
+              <span class="text-white">Time for return</span>
+              } @if(order.Status === 'ReturnTime') {
+              <span class="text-white">Returned</span>
+              } @if(order.Status === 'Returned') {
+              <span class="text-white">Toy Check</span>
+              } @if(order.Status === 'ToyChecked') {
+              <span class="text-white">Close</span>
+              }
+            </button>
+
             }
           </div>
           <div class="ml-auto">
             @if (!order.expanded) {
-            <p-button
-              icon="pi pi-angle-down"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
-              (onClick)="order.expanded = !order.expanded"
-            ></p-button>
-            } @else() {
-            <p-button
-              icon="pi pi-angle-up"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
-              (onClick)="order.expanded = !order.expanded"
+            <i
+              class="fa-solid fa-arrow-turn-down"
+              (click)="order.expanded = !order.expanded"
             >
-            </p-button>
+            </i>
+            } @else() {
+            <i
+              class="fa-solid fa-arrow-turn-up"
+              (click)="order.expanded = !order.expanded"
+            >
+            </i>
             }
           </div>
         </div>
         <h2>Order Date: {{ order.orderDate }}</h2>
-        <h2>Order Amount: &#8377;{{ order.amountToPay }}</h2>
+        <h2>Order Amount: &#8377;{{ order.orderTotal }}</h2>
       </div>
       @if(order.expanded) {
       <div>
-        <div class="flex">
-          <div class="w-9/12">
-            <p-dataView [value]="order.products" [rows]="30" [layout]="layout">
-              <ng-template pTemplate="list" let-product>
-                <div class="grid grid-nogutter">
+        <div class="flex flex-col md:flex-row">
+          <div class="w-full md:w-9/12">
+            <!-- Grid with responsive column configuration -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div
+                class="w-full"
+                *ngFor="let product of order.products; let first = first"
+              >
+                <div
+                  class="flex flex-col md:flex-row md:items-start p-4 gap-4 border-t-0 md:border-t-1 border-surface-border"
+                  [ngClass]="{ 'border-t md:border-t-1': !first }"
+                >
                   <div
-                    class="col-12"
-                    *ngFor="let product of order.products; let first = first"
+                    class="w-full md:w-1/6 flex justify-center md:justify-start"
+                  >
+                    <img
+                      class="shadow-md mx-auto md:mx-0 border-round w-24 h-24 md:w-auto md:h-auto"
+                      [src]="
+                        'https://skipcry.s3.eu-north-1.amazonaws.com/images/' +
+                        product.product.Code +
+                        '.jpg'
+                      "
+                      [alt]="product.product.Name"
+                    />
+                  </div>
+                  <div
+                    class="w-full md:w-3/6 flex flex-col md:flex-row justify-between"
                   >
                     <div
-                      class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
-                      [ngClass]="{ 'border-top-1 surface-border': !first }"
+                      class="text-lg md:text-l font-semibold text-900 text-center md:text-left"
                     >
-                      <div class="w-1/6">
-                        <img
-                          class="shadow-2 block xl:block mx-auto border-round"
-                          [src]="
-                            'https://toyimages.s3.ap-southeast-2.amazonaws.com/' +
-                            product.product.Code +
-                            '.jpg'
-                          "
-                          [alt]="product.product.Name"
-                        />
-                      </div>
-                      <div
-                        class="w-3/6 flex flex-column sm:flex-row justify-between"
-                      >
-                        <div class="text-xl font-bold text-900">
-                          {{ product.product.Name }}
-                        </div>
-                        <div class="text-xl font-semibold">
-                          &#8377;{{ product.rentedAmount }}
-                        </div>
-                      </div>
-                      <div class="w-2/6">
-                        <div>Rented for {{ product.rentedDays }}</div>
-                        <div>Return by {{ product.return }}</div>
-                      </div>
+                      {{ product.product.Name }}
+                    </div>
+                    <div
+                      class="text-lg md:text-xl font-semibold text-center md:text-right mt-2 md:mt-0"
+                    >
+                      &#8377;{{ product.rentedAmount }}
+                    </div>
+                    <div
+                      class="text-lg md:text-xl font-semibold text-center md:text-right mt-2 md:mt-0"
+                    >
+                      {{ product.product.prefQtyCode }}
                     </div>
                   </div>
+                  <div class="w-full md:w-2/6 text-center md:text-left">
+                    <div>{{ product.rentedDays }} /</div>
+                    <div>{{ product.return }}</div>
+                  </div>
                 </div>
-              </ng-template>
-            </p-dataView>
+              </div>
+            </div>
           </div>
         </div>
       </div>

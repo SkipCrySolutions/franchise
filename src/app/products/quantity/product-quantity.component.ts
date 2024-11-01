@@ -1,24 +1,32 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormsModule, NgForm } from "@angular/forms";
-import { ProductQuantity } from "./product-quantity.model";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ProductQuantity } from './product-quantity.model';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { CommonModule } from "@angular/common";
-import { Product } from "../product.model";
-import { ProductQtyService } from "./product-quantity.service";
+import { CommonModule } from '@angular/common';
+import { Product } from '../product.model';
+import { ProductQtyService } from './product-quantity.service';
+import { ProductQuantityDialogComponent } from './qty-dialog/qty-dialog.component';
 
 @Component({
   selector: 'app-product-quantity',
   templateUrl: 'product-quantity.component.html',
   standalone: true,
-  imports: [FormsModule, CommonModule, MatSidenavModule],
-  styleUrl: 'product-quantity.component.scss'
+  imports: [
+    FormsModule,
+    CommonModule,
+    MatSidenavModule,
+    ProductQuantityDialogComponent,
+  ],
+  styleUrl: 'product-quantity.component.scss',
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() public product!: Product;
   public productQtys: ProductQuantity[] = [];
   public productQuantity!: ProductQuantity;
+  public isDialogOpen = false;
   private isEdit = false;
-  constructor(private productQtyService: ProductQtyService) { }
+
+  constructor(private productQtyService: ProductQtyService) {}
 
   ngOnInit() {
     this.productQtys = this.product.quantities;
@@ -28,10 +36,12 @@ export class ProductQuantityComponent implements OnInit {
     if (form.valid) {
       console.log('Form Submitted!', form.value);
       console.log('Product Quantity => ', this.productQuantity);
-      this.productQtyService.addOrEditQtyToProduct(this.productQuantity, this.isEdit).subscribe((response) => {
-        console.log('Product Quantity added => ', response);
-        // this.productQtys.push(this.productQuantity);
-      });
+      this.productQtyService
+        .addOrEditQtyToProduct(this.productQuantity, this.isEdit)
+        .subscribe((response) => {
+          console.log('Product Quantity added => ', response);
+          // this.productQtys.push(this.productQuantity);
+        });
     } else {
       console.log('Form is invalid');
     }
@@ -41,10 +51,12 @@ export class ProductQuantityComponent implements OnInit {
     this.isEdit = true;
     console.log('Editing product quantity => ', productQty);
     this.productQuantity = productQty;
+    this.isDialogOpen = true;
   }
 
   createNewQuantity() {
     this.isEdit = false;
+    this.isDialogOpen = true;
     const code = `${this.product.Code}Q${this.product.Quantity + 1}`;
     this.productQuantity = {
       QtyCode: code,
@@ -54,7 +66,11 @@ export class ProductQuantityComponent implements OnInit {
       RentedTimes: 0,
       ProductCode: this.product.Code,
       NextAvailable: new Date().toISOString(),
-      StoreId: this.product.StoreId
+      StoreId: this.product.StoreId,
     };
+  }
+
+  closeDialog() {
+    this.isDialogOpen = false; // Close the dialog
   }
 }

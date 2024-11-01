@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
 import { OrdersService } from './orders.service';
 import { CommonModule } from '@angular/common';
-import { DataViewModule } from 'primeng/dataview';
-import { TimelineModule } from 'primeng/timeline';
-import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, DataViewModule, TimelineModule, ButtonModule],
+  imports: [CommonModule],
   templateUrl: './orders.component.html',
-  styleUrl: './orders.component.css'
+  styleUrl: './orders.component.scss'
 })
 export class OrdersComponent {
   public orders: any = [];

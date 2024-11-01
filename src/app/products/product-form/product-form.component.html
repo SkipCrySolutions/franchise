@@ -1,27 +1,55 @@
 @if(productAdded) { Product {{ editMode ? "Updated" : "Added" }} Successfully! }
-{{ product?.StoreId }}
-<div class="flex">
-  <div class="p-4">
-    <div class="flex p-4">
-      <div class="p-2">
-        Name: <input type="text" pInputText [(ngModel)]="name" class="border" />
+<div class="text-gray-700 font-semibold">
+  {{ product?.StoreId }}
+</div>
+<div class="flex flex-col md:flex-row">
+  <div class="p-4 w-full md:w-1/3">
+    <img
+      [src]="
+        'https://skipcry.s3.eu-north-1.amazonaws.com/images/' + code + '.jpg'
+      "
+      alt="Item Image"
+      class="w-full h-60 object-cover rounded-md shadow-md"
+    />
+  </div>
+  <div class="p-4 w-full md:w-2/3">
+    <div class="flex flex-col md:flex-row p-4">
+      <div class="p-2 w-full md:w-1/2">
+        <label for="name" class="block text-gray-700 font-bold mb-2"
+          >Name:</label
+        >
+        <input
+          type="text"
+          id="name"
+          [(ngModel)]="name"
+          class="border w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
       </div>
-      <div class="p-2">
-        Code: <input type="text" pInputText [(ngModel)]="code" class="border" />
+      <div class="p-2 w-full md:w-1/2">
+        <label for="code" class="block text-gray-700 font-bold mb-2"
+          >Code:</label
+        >
+        <input
+          type="text"
+          id="code"
+          [(ngModel)]="code"
+          class="border w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
       </div>
     </div>
-    <div class="flex p-4">
-      <div class="p-2">
-        Description:
+    <div class="flex flex-col md:flex-row p-4">
+      <div class="p-2 w-full md:w-1/2">
+        <label for="description" class="block text-gray-700 font-bold mb-2"
+          >Description:</label
+        >
         <textarea
           rows="5"
           cols="30"
-          pInputTextarea
           [(ngModel)]="description"
-          class="border"
+          class="border w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         ></textarea>
       </div>
-      <div class="p-2">
+      <div class="p-2 w-full md:w-1/2">
         <div class="p-1">
           Search Key:
           <textarea
@@ -29,16 +57,21 @@
             cols="30"
             pInputTextarea
             [(ngModel)]="searchKey"
-            class="border"
+            class="border border-gray-300 rounded-md p-2 w-full"
           ></textarea>
         </div>
-        <div>
-          <button class="p-2" (click)="generateSearchKey()">Generate</button>
+        <div class="mt-2">
+          <button
+            class="p-2 bg-blue-500 text-white rounded-md"
+            (click)="generateSearchKey()"
+          >
+            Generate
+          </button>
         </div>
       </div>
     </div>
-    <div class="flex p-4">
-      <div class="mb-4">
+    <div class="flex flex-col md:flex-row p-4">
+      <div class="mb-4 w-full">
         <label for="selectOption" class="block text-gray-700 font-bold mb-2"
           >Select Category: {{ category }}</label
         >
@@ -56,89 +89,110 @@
         </select>
       </div>
     </div>
-    <div class="flex p-4">
-      <div class="p-2">
-        Big Size?:
-        <p-checkbox
+    <div class="flex flex-col md:flex-row p-4">
+      <!-- <div class="p-2 w-full md:w-1/3 flex items-center space-x-2">
+        <label for="bigSize" class="text-gray-700 font-bold">
+          Big Size?
+        </label>
+        <input
+          type="checkbox"
+          id="bigSize"
           [(ngModel)]="bigSize"
-          [binary]="true"
-          inputId="bigSize"
-          class="border"
-        ></p-checkbox>
+          class="border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div> -->
+      <div class="p-2 w-full md:w-1/3 flex items-center space-x-2">
+        <label for="visible" class="text-gray-700 font-bold">Visible?</label>
+        <input
+        type="checkbox"
+        id="visible"
+        [(ngModel)]="visible"
+        class="border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-6 h-6"
+      />
       </div>
-      <div class="p-2">
-        Visible?:
-        <p-checkbox
-          [(ngModel)]="visible"
-          [binary]="true"
-          inputId="visible"
-          class="border"
-        ></p-checkbox>
-      </div>
-      <div class="p-2">
-        Franchise?:
-        <p-checkbox
-          [(ngModel)]="franchise"
-          [binary]="true"
-          inputId="franchise"
-          class="border"
-        ></p-checkbox>
-      </div>
-    </div>
-    <div class="flex p-4">
-      <div class="p-2">
-        Age:
-        <p-inputNumber inputId="age" [(ngModel)]="age" class="border">
-        </p-inputNumber>
-      </div>
-      <div class="p-2">
-        Original Price:
-        <p-inputNumber
-          inputId="price"
-          [(ngModel)]="originalPrice"
-          class="border"
+      <!-- <div class="p-2 w-full md:w-1/3 flex">
+        <label for="franchise" class="text-gray-700 font-bold"
+          >Franchise?</label
         >
-        </p-inputNumber>
+        <input
+          type="checkbox"
+          id="franchise"
+          [(ngModel)]="franchise"
+          class="border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div> -->
+    </div>
+    <div class="flex flex-col md:flex-row p-4">
+      <div class="p-2 w-full md:w-1/2">
+        Age:
+        <input
+          type="number"
+          id="age"
+          [(ngModel)]="age"
+          class="border border-gray-300 rounded-md p-2 w-full"
+        />
+      </div>
+      <div class="p-2 w-full md:w-1/2">
+        Original Price:
+        <input
+          type="number"
+          id="price"
+          [(ngModel)]="originalPrice"
+          class="border border-gray-300 rounded-md p-2 w-full"
+        />
       </div>
     </div>
-    <div class="flex p-4">
-      <div class="p-2">
+    <div class="flex flex-col md:flex-row p-4">
+      <div class="p-2 w-full md:w-1/2">
         Brand:
-        <input type="text" pInputText [(ngModel)]="brand" class="border" />
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="brand"
+          class="border border-gray-300 rounded-md p-2 w-full"
+        />
       </div>
-      <div class="p-2">
-        Link: <input type="text" pInputText [(ngModel)]="link" class="border" />
+      <div class="p-2 w-full md:w-1/2">
+        Link:
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="link"
+          class="border border-gray-300 rounded-md p-2 w-full"
+        />
       </div>
     </div>
-    <div class="flex p-4">
-      <div class="p-2">
+    <div class="flex flex-col md:flex-row p-4">
+      <div class="p-2 w-full md:w-1/2">
         Quantity:
-        <p-inputNumber inputId="Quantity" [(ngModel)]="quantity" class="border">
-        </p-inputNumber>
+        <input
+          type="number"
+          id="Quantity"
+          [(ngModel)]="quantity"
+          class="border border-gray-300 rounded-md p-2 w-full"
+        />
       </div>
       @if(product) {
-      <div class="p-2">
-        <h2>Shop Quantity: {{product.ShopQty}}</h2>
-        <h2>Budget: {{ product['Membership Type'] }}</h2>
-        <h2>Rent30: {{ product.rent30 }}</h2>
-        <h2>Rent15: {{ product.rent15 }}</h2>
+      <div class="p-2 w-full md:w-1/2">
+        <h2 class="text-lg font-semibold">
+          Shop Quantity: {{ product.ShopQty }}
+        </h2>
+        <h2 class="text-lg font-semibold">
+          Budget: {{ product["Membership Type"] }}
+        </h2>
+        <h2 class="text-lg font-semibold">Rent30: {{ product.rent30 }}</h2>
+        <h2 class="text-lg font-semibold">Rent15: {{ product.rent15 }}</h2>
       </div>
       }
     </div>
-    <div class="flex justify-center">
-      <p-button (onClick)="addOrEditProduct()" class="border p-4">
+    <div class="flex justify-center p-4">
+      <button
+        (click)="addOrEditProduct()"
+        class="border border-gray-300 bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      >
         @if (!editMode) { Add Product } @else() { Edit Product }
-      </p-button>
+      </button>
     </div>
-  </div>
-  <div>
-    <img
-      [src]="
-        'https://toyimages.s3.ap-southeast-2.amazonaws.com/' + code + '.jpg'
-      "
-      alt="Item Image"
-      class="w-60 h-60 md:object-cover"
-    />
   </div>
 </div>
 <div>

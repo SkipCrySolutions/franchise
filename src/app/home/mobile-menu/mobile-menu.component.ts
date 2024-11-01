@@ -17,6 +17,6 @@ export class MobileMenuComponent {
   }
 
   public openProducts() {
-    this.router.navigate(['products']);
+    this.router.navigate(['products', 'all']);
   }
 }

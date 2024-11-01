@@ -1,0 +1,129 @@
+<div class="justify-center overflow-scroll h-full">
+  <div class="flex">
+    <div class="ml-auto">
+      <button
+        class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+        (click)="close.emit()"
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <div class="bg-white rounded-lg shadow-md p-2">
+      <h2 class="text-lg font-bold mb-4">Edit Product Quantity</h2>
+    </div>
+    <form
+      #productQuantityForm="ngForm"
+      (ngSubmit)="onSubmit(productQuantityForm)"
+      class="space-y-4 p-2 bg-white rounded-lg shadow-md"
+    >
+      <div>
+        <label for="qtyCode" class="block text-gray-700 font-bold mb-1"
+          >Quantity Code:</label
+        >
+        <input
+          type="text"
+          id="qtyCode"
+          name="qtyCode"
+          [(ngModel)]="productQuantity.QtyCode"
+          [disabled]="!productQuantity.QtyCode"
+          class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label for="dateAdded" class="block text-gray-700 font-bold mb-1"
+          >Date Added:</label
+        >
+        <input
+          type="date"
+          id="dateAdded"
+          name="dateAdded"
+          [(ngModel)]="productQuantity.DateAdded"
+          required
+          class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label for="earned" class="block text-gray-700 font-bold mb-1"
+          >Earned:</label
+        >
+        <input
+          type="number"
+          id="earned"
+          name="earned"
+          [(ngModel)]="productQuantity.Earned"
+          class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label for="remarks" class="block text-gray-700 font-bold mb-1"
+          >Remarks:</label
+        >
+        <textarea
+          id="remarks"
+          name="remarks"
+          [(ngModel)]="productQuantity.Remarks"
+          class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        ></textarea>
+      </div>
+      <div>
+        <label for="rentedTimes" class="block text-gray-700 font-bold mb-1"
+          >Rented Times:</label
+        >
+        <input
+          type="number"
+          id="rentedTimes"
+          name="rentedTimes"
+          [(ngModel)]="productQuantity.RentedTimes"
+          class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label for="productCode" class="block text-gray-700 font-bold mb-1"
+          >Product Code:</label
+        >
+        <input
+          type="text"
+          id="productCode"
+          name="productCode"
+          [(ngModel)]="productQuantity.ProductCode"
+          [disabled]="true"
+          class="border border-gray-300 rounded-md p-2 w-full bg-gray-200 cursor-not-allowed"
+        />
+      </div>
+      <div>
+        <label for="nextAvailable" class="block text-gray-700 font-bold mb-1"
+          >Next Available:</label
+        >
+        <input
+          type="date"
+          id="nextAvailable"
+          name="nextAvailable"
+          [(ngModel)]="productQuantity.NextAvailable"
+          class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label for="storeId" class="block text-gray-700 font-bold mb-1"
+          >Store ID:</label
+        >
+        <input
+          type="text"
+          id="storeId"
+          name="storeId"
+          [(ngModel)]="productQuantity.StoreId"
+          [disabled]="true"
+          class="border border-gray-300 rounded-md p-2 w-full bg-gray-200 cursor-not-allowed"
+        />
+      </div>
+      <button
+        type="submit"
+        class="bg-blue-500 text-white rounded-md p-2 w-full hover:bg-blue-600 transition duration-200"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
